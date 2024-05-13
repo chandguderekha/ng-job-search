@@ -8,10 +8,12 @@ import { Jobs, JobDetails } from '../model/jobDetails';
 })
 export class JobService {
   private favoriteJobs: Jobs[] = [];
-
   private apiUrl = '/jobs';
+  private favoritesKey = 'favoriteJobs';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.loadFavorites();
+  }
 
   getFavoriteJobs(): Jobs[] {
     return this.favoriteJobs;
@@ -23,5 +25,16 @@ export class JobService {
 
   getJobsDetialsData(job: number) {
     return this.http.get<JobDetails>(`${this.apiUrl}/${job}` );
+  }
+
+  private loadFavorites(): void {
+    const favoritesString = localStorage.getItem(this.favoritesKey);
+    if (favoritesString) {
+      this.favoriteJobs = JSON.parse(favoritesString);
+    }
+  }
+
+  public saveFavorites(): void {
+    localStorage.setItem(this.favoritesKey, JSON.stringify(this.favoriteJobs));
   }
 }

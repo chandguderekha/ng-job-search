@@ -51,6 +51,7 @@ export class JobListComponent implements OnInit {
     } else {
       this.favoriteJobs.splice(index, 1);
     }
+    this.js.saveFavorites();
   }
 
   getjobDetails() {
